@@ -1,0 +1,131 @@
+
+Linear Regression :
+
+ y = beta_0 + (beta_1*x)
+
+ beta_1 = sum( (x-x_mean) + (y-y_mean) ) / sum( (x-x_mean) )
+
+ beta_0 = y_mean - beta_1*x_mean
+
+file         |  information
+---------------------------------
+reservoir_1  |  Veeranam raw
+reservoir_2  |  Veeranam cleaned
+reservoir_3  |  Veeranam labeled
+reservoir_4  |  Poondi raw
+reservoir_5  |  Poondi cleaned
+reservoir_6  |  Poondi labeled
+
+
+color   | label |    class
+---------------------------------------------------------
+blue    |   0   |   flooding  (regressive deep learning)
+orange  |   1   |   dried     (Time Series Analysis)
+green   |   2   |   flooded   (Time Series Analysis)
+red     |   3   |   linear    (liner regression)
+purple  |   4   |   drying    (regressive deep learning)
+
+label classified using k-means clustering based upon following attributes:
+	0. level
+	1. storage
+	2. inflow
+	3. rainfall
+
+
+ANN Performance recordings :
+
+3 hidden - 15 neurons each - 1000 iteration - mean absolute error     =======>    Train: 0.098494, Test: 0.107952
+(For class 1, storage prediction)
+
+3 hidden - 15 neurons each - 1000 iteration - mean absolute error     =======>    Train: 0.040587, Test: 0.047933
+(For class 0, storage prediction)
+
+3 hidden - 25-15-10 neurons - 1000 iteration - mean absolute error    =======>    Train: 0.026707, Test: 0.034012
+(For class 0, storage prediction)
+
+3 hidden - 25 neurons each - 1000 iteration - mean squared error      =======>   Train: 0.002275, Test: 0.005515
+(For class 0, storage prediction)
+
+3 hidden - 15 neurons each - 1000 iteration - mean squared error      =======>   Train: 0.001868, Test: 0.001967
+(For class 0, storage prediction)
+
+3 hidden - 15 neurons each - 10000 iteration - mean squared error     =======>   Train: 0.000658, Test: 0.001804
+(For class 0, storage prediction, batch_size = len(X_train))
+
+3 hidden - 15 neurons each - 10000 iteration - mean squared error     =======>   Train: 0.000422, Test: 0.001028
+(For class 4, storage prediction, batch_size = len(X_train))
+
+
+Time series notes:
+
+Factors to be considered for TSA
+	1. Understanding time frame from which analysis is to be done is very important.
+		a. shorts term - weekly (can cover day specific trends in a week)
+		b. medium term - monthly (can cover up seasonal trends)
+		c. long term - yearly (can cover up requirement and population growth)
+	2. We also need to determine the key metrics which are essential for our forecasting i.e what data to consider for
+	   forecasting and for what kind of forecasting.
+	3. Determine whether the fore casting is required on daily basis (make it auto-pilot) or is it required to be on
+	   demand.
+	4. Distinguish patterns from randomness.
+	5. Does the forecasting itself affects the pattern, in general the forecasting shouldn't affect the patterns and
+	   trends, but if does it does then it should be able to account for it.
+	6. Explore the background of your dataset and problem statement.
+
+Python modules needed for time series analysis
+    1. StatsModels library -> TSA Module for time series analysis
+    2. STLdecompose, pmdarima
+
+Important statistics while studying time series analysis
+    1. Stationarity : stationarity means whether the data has same statistics throughout time, data should be stationary for making TSA,
+    if not then there transformation and differencing techniques available that can make data stationary.
+
+    Testing for stationarity:
+        AD-Fuller test : p-value < 0.05 then stationary else non-stationary
+
+    2. Autocorrelation : dependence of value at a particular time to value at other times
+
+Parameter for ARIMA model:
+    1. p : order of autoregression
+    2. d : order of differencing - this is set to 0 if model is stationary
+    3. q : order of moving average
+
+ARIMA commented code
+'''
+import numpy as np
+import matplotlib.pyplot as plt
+from statsmodels.tsa.stattools import adfuller
+from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
+
+# Plotting time series data
+plt.figure(figsize=(12, 8))
+plt.plot(series_data)
+plt.xlabel('date')
+plt.ylabel('inflow')
+plt.show()
+
+# AD Fuller test for stationarity
+print('Results of ad fuller test:')
+df_test = adfuller(series_data, autolag="AIC")
+df_output = pd.Series(df_test[0:4],
+                      index=["Test statistics", "p-value",
+                             "Number of lags",
+                             "Number of observation used"])
+print(df_output)
+
+# Finding correlation
+fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 8))
+plot_acf(series_data, lags=730, ax=ax1)
+plot_pacf(series_data, lags=730, ax=ax2)
+plt.show()
+
+plt.figure(figsize=(12, 8))
+plt.plot(series_data)
+plt.plot(result.fittedvalues, color='red')
+plt.show()
+print(series_data.tail())
+print(result.fittedvalues.tail())
+print(result.resid.tail())
+print((series_data-result.fittedvalues).tail())
+print('mean of residuals : ', np.mean(result.resid))
+'''
