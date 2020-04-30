@@ -8,7 +8,7 @@ from tensorflow.keras.optimizers import SGD
 from tensorflow.keras.layers import BatchNormalization
 
 
-def Class1StoragePrediction(storage, inflow, rainfall, outflow):
+def Class0StoragePrediction(storage, inflow, rainfall, outflow):
     df = pd.read_csv('/home/akash/PycharmProjects/Reservoir/Datasets/class0.csv')
     X = df[['storage', 'inflow', 'rainfall', 'outflow']]
     y = np.array(df['next_storage'])
@@ -34,15 +34,19 @@ def Class1StoragePrediction(storage, inflow, rainfall, outflow):
                         batch_size=len(X_train))
 
     # Verification
-    # input_array = np.array(X_test)
-    # y_pred = model.predict(input_array)
-    # y_pred = scaler.inverse_transform(y_pred)
-    # y_test = scaler.inverse_transform(y_test)
-    # for i in range(len(y_pred)):
-    #     print(y_test[i], '\t', y_pred[i])
+    input_array = np.array(X_test)
+    y_pred = model.predict(input_array)
+    y_pred = scaler.inverse_transform(y_pred)
+    y_test = scaler.inverse_transform(y_test)
+    for i in range(len(y_pred)):
+        print(y_test[i], '\t', y_pred[i])
 
     input_array = np.array([[storage, inflow, rainfall, outflow]])
     input_array = scaler.transform(input_array)
     y_pred = model.predict(input_array)
     y_pred = scaler.inverse_transform(y_pred)
     return y_pred
+
+
+result = Class0StoragePrediction(1613.0, 663.0, 0.0, 337.0)
+print(result)
