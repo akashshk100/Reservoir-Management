@@ -3,15 +3,20 @@ import numpy as np
 import matplotlib.pyplot as plt
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import LSTM
 from sklearn.model_selection import train_test_split
+from tensorflow.python.keras.layers import BatchNormalization
 
-df = pd.read_csv('/Datasets/reservoir_5.csv')
+df = pd.read_csv('/home/akash/PycharmProjects/Reservoir/Datasets/class4.csv')
 model = Sequential()
 
 
 def fit_model(X_train, y_train):
-    model.add(Dense(100, activation='relu', input_dim=5))
-    model.add(Dense(1))
+    model.add(Dense(1000, activation='relu', input_dim=5))
+    model.add(Dense(500, activation='relu'))
+    model.add(Dense(200, activation='relu'))
+    model.add(Dense(1, activation='linear'))
+    # model.add(BatchNormalization())
     model.compile(loss='mean_squared_error', optimizer='adam')
     model.fit(X_train, y_train, epochs=500, verbose=1)
 
@@ -34,15 +39,17 @@ def tune_rainfall(rainfall):
 
 def supervised_data(lag):
     rainfall = df['rainfall'].values
-    rainfall = tune_rainfall(rainfall)
+    # rainfall = tune_rainfall(rainfall)
     supervised_input = []
     supervised_output = []
     for i in range(len(rainfall) - lag):
         row = []
         for j in range(lag):
             row.append(rainfall[i + j])
-        supervised_output.append(rainfall[i + 3])
+        supervised_output.append(rainfall[i + 5])
         supervised_input.append(row)
+    # for i in range(len(supervised_output)):
+    #     print(supervised_input[i], '\t', supervised_output[i])
     return supervised_input, supervised_output
 
 
@@ -52,7 +59,7 @@ def forecast_rainfall(input_list):
     op = np.array(op)
     X_train, X_test, y_train, y_test = train_test_split(ip, op, test_size=0.3)
     fit_model(X_train, y_train)
-    # verify_model(X_test, y_test)
+    verify_model(X_test, y_test)
     output_list = []
     for i in range(5):
         input_list = input_list[i:]
@@ -92,4 +99,4 @@ def verify_model(X_test, y_test):
     plt.show()
 
 
-print(forecast_rainfall([0.0, 0.0, 28.9, 4.3, 0.0]))
+print(forecast_rainfall([0.0, 0.0, 0.0, 16, 27]))
