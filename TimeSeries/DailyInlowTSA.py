@@ -17,7 +17,7 @@ def fit_model(X_train, y_train):
 
 
 def supervised_data(lag):
-    inflow = df['rainfall'].values
+    inflow = df['inflow'].values
     supervised_input = []
     supervised_output = []
     for i in range(len(inflow) - lag):
@@ -29,7 +29,7 @@ def supervised_data(lag):
     return supervised_input, supervised_output
 
 
-def forecast_rainfall(input_list):
+def forecast_inflow(input_list):
     ip, op = supervised_data(5)
     ip = np.array(ip)
     op = np.array(op)
@@ -75,4 +75,4 @@ def verify_model(X_test, y_test):
     plt.show()
 
 
-print(forecast_rainfall([0.0, 0.0, 28.9, 4.3, 0.0]))
+print(forecast_inflow([520, 620, 620, 620, 801]))
