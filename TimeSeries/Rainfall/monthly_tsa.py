@@ -22,7 +22,7 @@ def find_sum(temp):
 
 
 def monthly_decompose():
-    df = pd.read_csv('/home/akash/PycharmProjects/Reservoir/Datasets/reservoir_5.csv')
+    df = pd.read_csv('../../Datasets/reservoir_5.csv')
     rainfall = df['rainfall'].values
     date = df['date'].values
     date_obj = []
@@ -48,7 +48,7 @@ def monthly_decompose():
         for j in range(12):
             collected_list.append(acum_rainfall_1[j][i])
     for i in range(len(collected_list)):
-        append_list_as_row('/home/akash/PycharmProjects/Reservoir/Datasets/monthly_rainfall.csv', [collected_list[i]])
+        append_list_as_row('../../Datasets/monthly_rainfall.csv', [collected_list[i]])
     return collected_list
 
 
@@ -64,7 +64,7 @@ def model_evaluation(series_data, fitted_values):
 
 
 def predict_rainfall(start, end):
-    df = pd.read_csv('/home/akash/PycharmProjects/Reservoir/Datasets/monthly_rainfall.csv')
+    df = pd.read_csv('../../Datasets/monthly_rainfall.csv')
     collected_list = df['total_rainfall'].values
     series_data = pd.Series(collected_list, index=pd.DatetimeIndex(
                                 data=(tuple(pd.date_range('01/01/2004',

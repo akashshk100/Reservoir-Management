@@ -8,10 +8,10 @@ reg = linear_model.LinearRegression()
 
 def fit_linear_model():
     global reg
-    df = pd.read_csv('/home/akash/PycharmProjects/Reservoir/reservoir_5.csv')
+    df = pd.read_csv('../Datasets/reservoir_5.csv')
     inflow = df['inflow']
     outflow = df['outflow']
-    df_label = pd.read_csv('/home/akash/PycharmProjects/Reservoir/reservoir_6.csv')
+    df_label = pd.read_csv('../Datasets/reservoir_6.csv')
     label = df_label['label']
 
     X = []
@@ -43,5 +43,9 @@ def fit_linear_model():
 
 def linear_predict(inflow):
     global reg
+    fit_linear_model()
     outflow = reg.predict([[inflow]])
     return outflow[0]
+
+
+print(linear_predict(13489.0))

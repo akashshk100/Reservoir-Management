@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 
 def forecast_inflow(start_date, end_date):
-    df = pd.read_csv('/home/akash/PycharmProjects/Reservoir/Datasets/reservoir_5.csv')
+    df = pd.read_csv('../../Datasets/reservoir_5.csv')
     series_data = pd.Series(df['inflow'].values,
                             index=pd.DatetimeIndex(
                             data=(tuple(pd.date_range('01/01/2004',

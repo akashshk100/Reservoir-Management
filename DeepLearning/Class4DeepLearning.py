@@ -58,7 +58,7 @@ def verify_model(X_test, y_test):
 
 
 def Class4StoragePrediction(storage, inflow, rainfall):
-    df = pd.read_csv('/home/akash/PycharmProjects/Reservoir/Datasets/class4.csv')
+    df = pd.read_csv('../Datasets/class4.csv')
     X = df[['storage', 'inflow', 'rainfall']]
     y = np.array(df['next_storage'])
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)

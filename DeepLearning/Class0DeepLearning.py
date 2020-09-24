@@ -20,7 +20,7 @@ def fit_model(X_train, y_train, X_test, y_test):
     # training
     opt = SGD(lr=0.01, momentum=0.9)
     model.compile(loss='mean_squared_error', optimizer=opt, metrics=['accuracy'])
-    history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=10000, verbose=1,
+    history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=1000, verbose=1,
                         batch_size=len(X_train))
     # evaluate the model
     train_loss, train_acc = model.evaluate(X_train, y_train, batch_size=len(X_train))
@@ -58,7 +58,7 @@ def verify_model(X_test, y_test):
 
 
 def Class4StoragePrediction(storage, inflow, rainfall):
-    df = pd.read_csv('/home/akash/PycharmProjects/Reservoir/Datasets/class0.csv')
+    df = pd.read_csv('../Datasets/class0.csv')
     X = df[['storage', 'inflow', 'rainfall']]
     y = np.array(df['next_storage'])
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)

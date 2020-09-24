@@ -49,7 +49,7 @@ def tune_output(fitted_value, series_data):
 
 
 def forecast_rainfall(start, end):
-    df = pd.read_csv('/home/akash/PycharmProjects/Reservoir/Datasets/reservoir_5.csv')
+    df = pd.read_csv('../../Datasets/reservoir_5.csv')
     data = df['rainfall'].values
     # data = tune_rainfall(data)
     series_data = pd.Series(data, index=pd.DatetimeIndex(

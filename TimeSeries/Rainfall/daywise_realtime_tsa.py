@@ -7,7 +7,7 @@ from tensorflow.keras.layers import LSTM
 from sklearn.model_selection import train_test_split
 from tensorflow.python.keras.layers import BatchNormalization
 
-df = pd.read_csv('/home/akash/PycharmProjects/Reservoir/Datasets/class4.csv')
+df = pd.read_csv('../../Datasets/class4.csv')
 model = Sequential()
 
 
@@ -18,7 +18,7 @@ def fit_model(X_train, y_train):
     model.add(Dense(1, activation='linear'))
     # model.add(BatchNormalization())
     model.compile(loss='mean_squared_error', optimizer='adam')
-    model.fit(X_train, y_train, epochs=500, verbose=1)
+    model.fit(X_train, y_train, epochs=200, verbose=1)
 
 
 def tune_rainfall(rainfall):
